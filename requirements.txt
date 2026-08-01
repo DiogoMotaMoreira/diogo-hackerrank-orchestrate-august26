@@ -1,0 +1,9 @@
+pandas
+scikit-learn
+pillow
+pytesseract
+openai-whisper
+google-generativeai
+python-dotenv
+groq
+openai
