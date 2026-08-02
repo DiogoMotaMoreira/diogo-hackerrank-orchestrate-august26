@@ -1,11 +1,16 @@
 import os
+import sys
 import pandas as pd
 from sklearn.metrics import classification_report, accuracy_score
 
-
 def evaluate():
     dataset_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "dataset"))
-    sample_path = os.path.join(dataset_dir, "sample_messages.csv")
+    
+    gt_file_name = "sample_messages.csv"
+    if len(sys.argv) > 1:
+        gt_file_name = sys.argv[1]
+
+    sample_path = os.path.join(dataset_dir, gt_file_name) if not os.path.isabs(gt_file_name) else gt_file_name
     output_path = os.path.join(dataset_dir, "output.csv")
 
     if not os.path.exists(sample_path):
@@ -19,22 +24,19 @@ def evaluate():
     gt_df = pd.read_csv(sample_path)
     pred_df = pd.read_csv(output_path)
 
-    # Normalize message_id to clean string representation on both sides
     gt_df["message_id"] = gt_df["message_id"].astype(str).str.strip()
     pred_df["message_id"] = pred_df["message_id"].astype(str).str.strip()
 
     merged = pd.merge(gt_df, pred_df, on="message_id", suffixes=("_gt", "_pred"))
 
     if merged.empty:
-        print("Still no matching message_ids found.")
-        print(f"Sample IDs in sample_messages.csv: {gt_df['message_id'].head().tolist()}")
-        print(f"Sample IDs in output.csv: {pred_df['message_id'].head().tolist()}")
+        print("No matching message_ids found.")
         return
 
     print("\n" + "=" * 50)
     print("           EVALUATION BENCHMARK REPORT          ")
     print("=" * 50)
-    print(f"Evaluated Sample Rows: {len(merged)}")
+    print(f"Evaluated File: {os.path.basename(sample_path)} | Rows: {len(merged)}")
     
     if "action_gt" in merged.columns and "action_pred" in merged.columns:
         acc = accuracy_score(merged["action_gt"], merged["action_pred"])
@@ -48,7 +50,6 @@ def evaluate():
         print(f"\nMessage Type Accuracy: {type_acc * 100:.2f}%")
 
     print("=" * 50 + "\n")
-
 
 if __name__ == "__main__":
     evaluate()

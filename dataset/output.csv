@@ -1,31 +1,111 @@
 message_id,action,message_type,reason,confidence,evidence_message_ids
-sample_msg_001,notify,urgent,The message contains a time-sensitive update about a water supply issue and a request to take immediate action.,0.9,message_0029;message_0129;message_0215
-sample_msg_002,notify,event,"The message contains a time-sensitive update about a bus schedule change and requests parents to keep their kids ready by a specific time, indicating an urgent event-related notification.",0.9,message_0209;message_0133;message_0051
-sample_msg_003,notify,urgent,Direct mention and immediate deadline to close client note before EOD,0.9,message_0003;message_0060;message_0170
-sample_msg_004,digest,business_update,"The message is a transactional update from Amazon about an order, which is a routine non-urgent business update.",0.9,none
-sample_msg_005,digest,business_update,"The message is a health-related update from a verified healthcare business, containing routine non-urgent information about an upcoming appointment or prescription details.",0.9,none
-sample_msg_006,notify,personal,Direct mention and request for a call,0.9,message_0006;message_0250
-sample_msg_007,mute,promotion,"The message contains a promotional offer with a price and a call to action to view an itinerary, indicating a sales or marketing message.",0.95,none
-sample_msg_008,digest,event,"The message is about a cultural night form and does not contain any urgent or personal information, but rather informs about an upcoming event.",0.9,message_0008
-sample_msg_009,digest,greeting,The message is a casual good morning greeting in a family group chat with no urgent or actionable content.,0.9,message_0009
-sample_msg_010,digest,event,"The message is about watching a match and starting a score thread, which is a scheduled activity in a group chat.",0.8,message_0010;message_0038
-sample_msg_011,digest,unknown,Rule fallback.,0.5,none
-sample_msg_012,digest,unknown,Rule fallback.,0.5,message_0012
-sample_msg_013,mute,personal,Message from an explicitly muted group.,0.98,message_0123;message_0168;message_0241
-sample_msg_014,digest,unknown,Rule fallback.,0.5,message_0016
-sample_msg_015,digest,unknown,Rule fallback.,0.5,none
-sample_msg_019,notify,urgent,Time-sensitive OTP security verification code.,0.99,message_0213;message_0199;message_0196
-sample_msg_020,notify,urgent,Time-sensitive OTP security verification code.,0.99,message_0202;message_0184;message_0201
-sample_msg_041,digest,unknown,Rule fallback.,0.5,message_0046
-sample_msg_042,digest,unknown,Rule fallback.,0.5,message_0035
-sample_msg_043,digest,unknown,Rule fallback.,0.5,none
-sample_msg_044,digest,unknown,Rule fallback.,0.5,message_0049;message_0095;message_0390
-sample_msg_045,mute,personal,Message from an explicitly muted group.,0.98,message_0025;message_0050;message_0335
-sample_msg_046,digest,unknown,Rule fallback.,0.5,message_0209;message_0133;message_0051
-sample_msg_047,digest,unknown,Rule fallback.,0.5,none
-sample_msg_048,notify,urgent,Time-sensitive OTP security verification code.,0.99,none
-sample_msg_049,digest,unknown,Rule fallback.,0.5,none
-sample_msg_050,digest,unknown,Rule fallback.,0.5,message_0359;message_0168;message_0226
-sample_msg_051,digest,unknown,Rule fallback.,0.5,message_0118;message_0055;message_0227
-sample_msg_052,digest,unknown,Rule fallback.,0.5,message_0238;message_0381
-sample_msg_053,notify,urgent,Time-sensitive OTP security verification code.,0.99,message_0213;message_0196;message_0174
+msg_023,digest,urgent,Standard message saved for scheduled notification digest.,0.67,none
+msg_091,mute,scam,Phishing scam attempt requesting password verification or fake OTP access.,1.0,message_0238;message_0381
+msg_090,digest,greeting,Casual greeting summarized for daily notification digest.,0.72,none
+msg_048,mute,urgent,Suppressed as low-value or promotional notification.,0.76,message_0237;message_0099;message_0151
+msg_040,mute,promotion,Message from an explicitly muted group according to user preferences.,1.0,message_0136;message_0259;message_0135
+msg_075,notify,spam,High priority direct notification.,0.55,none
+msg_005,digest,personal,Routine group chat message aggregated for scheduled digest delivery.,0.82,message_0049;message_0095;message_0390
+msg_104,digest,spam,Standard message saved for scheduled notification digest.,0.75,message_0232;message_0050;message_0335
+msg_069,mute,forward,Message from an explicitly muted group according to user preferences.,1.0,message_0177;message_0194;message_0042
+msg_107,mute,urgent,Suppressed as low-value or promotional notification.,0.51,message_0213;message_0196;message_0174
+msg_070,notify,urgent,Time-sensitive security verification code (OTP) detected.,0.82,message_0213;message_0199;message_0196
+msg_003,notify,business_update,High priority direct notification.,0.63,none
+msg_099,digest,spam,Standard message saved for scheduled notification digest.,0.62,message_0118;message_0055;message_0227
+msg_008,digest,spam,Standard message saved for scheduled notification digest.,0.79,none
+msg_092,digest,urgent,Standard message saved for scheduled notification digest.,0.87,none
+msg_060,digest,personal,Routine group chat message aggregated for scheduled digest delivery.,0.56,message_0175;message_0404;message_0284
+msg_004,notify,event,Health or medical appointment notification.,0.99,none
+msg_030,mute,promotion,Message from an explicitly muted group according to user preferences.,0.98,message_0025;message_0050;message_0335
+msg_045,digest,greeting,Casual greeting summarized for daily notification digest.,0.58,message_0146;message_0145
+msg_052,mute,spam,Sender has multiple recent spam reports (61 reports in 30 days).,0.97,none
+msg_009,digest,personal,Routine group chat message aggregated for scheduled digest delivery.,0.8,message_0073;message_0074
+msg_071,notify,personal,Health or medical appointment notification.,0.72,message_0197;message_0198
+msg_016,mute,scam,Phishing scam attempt requesting password verification or fake OTP access.,0.99,message_0202;message_0184;message_0201
+msg_065,digest,promotion,Promotional offer saved for scheduled digest summary.,0.59,none
+msg_038,mute,forward,Broadcast chain message forwarded 10 times.,1.0,message_0131;message_0132
+msg_086,notify,spam,High priority direct notification.,0.5,none
+msg_014,digest,promotion,Promotional offer saved for scheduled digest summary.,0.83,none
+msg_094,mute,promotion,Sender has multiple recent spam reports (5 reports in 30 days).,0.6,none
+msg_029,mute,promotion,Contains promotional marketing offers or discount deals.,1.0,message_0049;message_0095;message_0390
+msg_105,mute,forward,Broadcast chain message forwarded 7 times.,1.0,message_0373;message_0233
+msg_002,notify,personal,Direct user mention requiring immediate attention.,0.68,message_0003;message_0060;message_0170
+msg_010,digest,business_update,Non-urgent business update or transactional receipt.,0.76,none
+msg_078,mute,forward,Message from an explicitly muted group according to user preferences.,1.0,message_0211;message_0212
+msg_013,digest,promotion,Promotional offer saved for scheduled digest summary.,0.58,message_0081;message_0082
+msg_018,mute,forward,Broadcast chain message forwarded 9 times.,1.0,message_0092;message_0091;message_0026
+msg_044,mute,urgent,Suppressed as low-value or promotional notification.,0.84,message_0144;message_0036;message_0143
+msg_032,digest,personal,Routine group chat message aggregated for scheduled digest delivery.,0.8,message_0120;message_0119;message_0285
+msg_106,mute,spam,Suppressed as low-value or promotional notification.,0.46,message_0377;message_0376;message_0234
+msg_006,digest,personal,Routine group chat message aggregated for scheduled digest delivery.,0.71,message_0029;message_0129;message_0215
+msg_109,digest,personal,Routine group chat message aggregated for scheduled digest delivery.,0.66,message_0237;message_0099;message_0151
+msg_108,notify,urgent,Urgent time-sensitive alert requiring immediate user attention.,0.58,none
+msg_019,digest,spam,Standard message saved for scheduled notification digest.,0.46,none
+msg_088,digest,personal,Routine group chat message aggregated for scheduled digest delivery.,0.59,message_0025;message_0050;message_0335
+msg_056,notify,personal,Direct user mention requiring immediate attention.,0.94,message_0123;message_0168;message_0241
+msg_027,digest,promotion,Promotional offer saved for scheduled digest summary.,0.71,none
+msg_050,notify,event,Health or medical appointment notification.,0.99,none
+msg_083,digest,personal,Routine group chat message aggregated for scheduled digest delivery.,0.8,message_0219
+msg_063,notify,urgent,Urgent time-sensitive alert requiring immediate user attention.,0.68,message_0181;message_0182
+msg_033,digest,personal,Routine group chat message aggregated for scheduled digest delivery.,0.98,message_0121;message_0122
+msg_061,mute,promotion,Message from an explicitly muted group according to user preferences.,1.0,message_0177;message_0194;message_0042
+msg_020,mute,urgent,Suppressed as low-value or promotional notification.,0.91,message_0049;message_0095;message_0390
+msg_017,digest,personal,Routine group chat message aggregated for scheduled digest delivery.,0.66,message_0090;message_0089
+msg_058,mute,forward,Message from an explicitly muted group according to user preferences.,1.0,message_0123;message_0168;message_0241
+msg_026,digest,spam,Standard message saved for scheduled notification digest.,0.42,none
+msg_047,digest,personal,Routine group chat message aggregated for scheduled digest delivery.,0.66,message_0237;message_0099;message_0151
+msg_046,digest,urgent,Routine group chat message aggregated for scheduled digest delivery.,0.5,message_0148;message_0147
+msg_042,digest,urgent,Routine group chat message aggregated for scheduled digest delivery.,0.48,message_0139;message_0140
+msg_079,notify,urgent,Time-sensitive security verification code (OTP) detected.,0.58,message_0213;message_0199;message_0196
+msg_098,digest,personal,Standard message saved for scheduled notification digest.,0.44,message_0359;message_0168;message_0226
+msg_037,notify,greeting,High priority direct notification.,0.53,message_0029;message_0129;message_0215
+msg_007,digest,personal,Routine group chat message aggregated for scheduled digest delivery.,0.8,message_0070;message_0069
+msg_085,notify,urgent,Urgent time-sensitive alert requiring immediate user attention.,0.59,none
+msg_001,notify,urgent,High priority direct notification.,0.71,message_0057;message_0058;message_0240
+msg_021,digest,urgent,Routine group chat message aggregated for scheduled digest delivery.,0.77,message_0029;message_0129;message_0215
+msg_028,mute,promotion,Sender has multiple recent spam reports (4 reports in 30 days).,0.61,none
+msg_012,mute,forward,Broadcast chain message forwarded 9 times.,1.0,message_0080;message_0247;message_0079
+msg_064,mute,personal,Suppressed as low-value or promotional notification.,0.57,message_0202;message_0184;message_0201
+msg_103,digest,spam,Standard message saved for scheduled notification digest.,0.75,message_0231;message_0049;message_0390
+msg_031,digest,personal,Scheduled calendar event or meeting invitation aggregated for digest.,0.54,message_0118;message_0117;message_0249
+msg_057,notify,urgent,Direct user mention requiring immediate attention.,0.62,message_0003;message_0060;message_0170
+msg_087,notify,event,Health or medical appointment notification.,0.63,message_0223;message_0204;message_0358
+msg_067,notify,urgent,High priority direct notification.,0.57,message_0029;message_0129;message_0215
+msg_039,notify,event,Direct user mention requiring immediate attention.,0.72,message_0209;message_0133;message_0051
+msg_082,digest,personal,Routine group chat message aggregated for scheduled digest delivery.,0.66,message_0218;message_0397
+msg_066,mute,promotion,Sender has multiple recent spam reports (6 reports in 30 days).,1.0,none
+msg_049,notify,spam,High priority direct notification.,0.48,none
+msg_015,digest,urgent,Routine group chat message aggregated for scheduled digest delivery.,0.63,message_0213;message_0199;message_0196
+msg_051,mute,promotion,Sender has multiple recent spam reports (5 reports in 30 days).,1.0,none
+msg_097,digest,personal,Standard message saved for scheduled notification digest.,0.74,message_0359;message_0168;message_0226
+msg_089,digest,event,Scheduled calendar event or meeting invitation aggregated for digest.,0.66,none
+msg_053,mute,promotion,Broadcast chain message forwarded 6 times.,1.0,message_0253;message_0161;message_0162
+msg_059,notify,personal,High priority direct notification.,0.37,message_0213;message_0199;message_0196
+msg_024,mute,promotion,Sender has multiple recent spam reports (5 reports in 30 days).,1.0,none
+msg_072,mute,urgent,Suppressed as low-value or promotional notification.,0.92,message_0213;message_0199;message_0196
+msg_036,mute,spam,Sender has multiple recent spam reports (20 reports in 30 days).,0.97,none
+msg_076,mute,spam,Sender has multiple recent spam reports (61 reports in 30 days).,0.97,none
+msg_055,digest,personal,Routine group chat message aggregated for scheduled digest delivery.,0.6,message_0166;message_0165
+msg_102,digest,urgent,Standard message saved for scheduled notification digest.,0.55,message_0003;message_0060;message_0170
+msg_080,digest,personal,Routine group chat message aggregated for scheduled digest delivery.,0.41,message_0029;message_0129;message_0215
+msg_093,notify,urgent,Time-sensitive security verification code (OTP) detected.,0.72,none
+msg_034,mute,forward,Message from an explicitly muted group according to user preferences.,1.0,message_0123;message_0168;message_0241
+msg_035,digest,spam,Standard message saved for scheduled notification digest.,0.62,none
+msg_101,digest,greeting,Casual greeting summarized for daily notification digest.,0.89,message_0268;message_0370;message_0229
+msg_041,digest,spam,Standard message saved for scheduled notification digest.,0.55,none
+msg_011,mute,promotion,Message from an explicitly muted group according to user preferences.,1.0,message_0123;message_0168;message_0241
+msg_110,mute,scam,Phishing scam attempt requesting password verification or fake OTP access.,0.87,message_0238;message_0381
+msg_095,digest,urgent,Standard message saved for scheduled notification digest.,0.78,message_0202;message_0184;message_0201
+msg_074,mute,promotion,Message from an explicitly muted group according to user preferences.,1.0,message_0223;message_0204;message_0358
+msg_073,mute,forward,Broadcast chain message forwarded 9 times.,1.0,message_0202;message_0184;message_0201
+msg_054,digest,personal,Routine group chat message aggregated for scheduled digest delivery.,0.41,message_0164;message_0163
+msg_068,digest,personal,Routine group chat message aggregated for scheduled digest delivery.,0.41,message_0191;message_0192
+msg_100,notify,urgent,Urgent time-sensitive alert requiring immediate user attention.,0.89,message_0118;message_0055;message_0227
+msg_062,mute,promotion,Broadcast chain message forwarded 7 times.,1.0,message_0029;message_0129;message_0215
+msg_096,mute,spam,Suppressed as low-value or promotional notification.,0.46,none
+msg_043,mute,forward,Broadcast chain message forwarded 11 times.,1.0,message_0029;message_0129;message_0215
+msg_077,notify,event,High priority direct notification.,0.89,message_0209;message_0133;message_0051
+msg_081,notify,event,High priority direct notification.,0.69,message_0217
+msg_025,notify,business_update,High priority direct notification.,0.63,none
+msg_084,digest,promotion,Promotional offer saved for scheduled digest summary.,0.64,none
+msg_022,digest,urgent,Routine group chat message aggregated for scheduled digest delivery.,0.77,message_0237;message_0099;message_0151
