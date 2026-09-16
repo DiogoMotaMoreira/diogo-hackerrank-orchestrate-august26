@@ -1,3 +1,43 @@
+# Message Notification Router — Solution Setup & Run Instructions
+
+## 1. Setup Instructions
+To run this solution, set up a virtual environment and install the required dependencies:
+
+```bash
+# 1. Create and activate a virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# 2. Install dependencies (scikit-learn, sentence-transformers, pandas, numpy, openai-whisper, pillow, etc.)
+pip install -r requirements.txt
+```
+
+## 2. Running the Router
+To execute the pipeline and generate predictions for any CSV input file (by default `messages.csv` located inside the `dataset/` folder):
+
+```bash
+# Run the main prediction pipeline
+python code/main.py messages.csv
+```
+This generates the predicted labels and saves them to `dataset/output.csv`.
+
+To run the diagnostic suite and verify accuracy against the solved training examples:
+```bash
+python code/evaluation/diagnostics.py sample_messages.csv
+```
+
+## 3. Solution Overview
+The router uses a hybrid **Ensemble Decision Fusion** architecture:
+1. **Media Processor**: Runs local OCR (via Pillow/EasyOCR fallback) and local voice note transcription (via OpenAI Whisper) to merge all text context.
+2. **Context Engine**: Cross-references 8 relational databases (user preference histories, quiet hours DND windows, open/reply/dismiss rates, and group mute states) and computes **global semantic retrieval** via cosine similarity of sentence embeddings.
+3. **Feature Extractor**: Maps text patterns and context indicators into a 50+ dimension scaled vector.
+4. **Machine Learning Classifier**: A locally trained Logistic Regression model predicting action probabilities.
+5. **Decision Fusion Engine**: Applies priority-based rule overrides to handle critical security alerts (OTP), phishing protection, peer-sale mute histories, and negation checks (e.g. casual voice transcripts).
+
+For a deep-dive, refer to the detailed reference file: [PROJECT_EXPLANATION.md](./PROJECT_EXPLANATION.md).
+
+---
+
 # HackerRank Orchestrate
 
 Starter repository for the **HackerRank Orchestrate** 24-hour hackathon.

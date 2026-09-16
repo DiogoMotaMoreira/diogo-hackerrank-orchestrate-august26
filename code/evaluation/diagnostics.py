@@ -12,6 +12,8 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 
 from feature_extractor import FeatureExtractor
 from classifier import LocalClassifier
+from context_engine import ContextEngine
+from media_processor import MediaProcessor
 
 try:
     from xgboost import XGBClassifier
@@ -20,7 +22,8 @@ except ImportError:
     HAS_XGB = False
 
 def run_diagnostics(dataset_filename: str = "sample_messages.csv"):
-    dataset_path = os.path.join(os.path.dirname(__file__), "..", "..", "dataset", dataset_filename)
+    dataset_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "dataset"))
+    dataset_path = os.path.join(dataset_dir, dataset_filename)
     if not os.path.exists(dataset_path):
         dataset_path = dataset_filename
 
@@ -35,18 +38,47 @@ def run_diagnostics(dataset_filename: str = "sample_messages.csv"):
     df = pd.read_csv(dataset_path)
     extractor = FeatureExtractor()
     rule_classifier = LocalClassifier()
+    context_eng = ContextEngine(dataset_dir)
+    media_proc = MediaProcessor(dataset_dir)
+
+    images_path = os.path.join(dataset_dir, "images.csv")
+    voice_notes_path = os.path.join(dataset_dir, "voice_notes.csv")
+
+    image_lookup = {}
+    if os.path.exists(images_path):
+        df_images = pd.read_csv(images_path)
+        col_img = 'file_path' if 'file_path' in df_images.columns else ('path' if 'path' in df_images.columns else None)
+        if 'image_id' in df_images.columns and col_img:
+            image_lookup = df_images.set_index('image_id')[col_img].to_dict()
+
+    voice_lookup = {}
+    if os.path.exists(voice_notes_path):
+        df_voice_notes = pd.read_csv(voice_notes_path)
+        col_voice = 'file_path' if 'file_path' in df_voice_notes.columns else ('path' if 'path' in df_voice_notes.columns else None)
+        if 'voice_note_id' in df_voice_notes.columns and col_voice:
+            voice_lookup = df_voice_notes.set_index('voice_note_id')[col_voice].to_dict()
 
     extracted_records = []
     feature_activation_counts = {}
 
     for _, row in df.iterrows():
         msg_dict = row.to_dict()
-        ctx = {"group_meta": {}, "business_meta": {}, "history_count": 0}
-        raw_text = str(row.get("message_text", ""))
-        feats = extractor.extract(msg_dict, raw_text, ctx)
+        msg_type_raw = str(msg_dict.get("media_type", "text")).lower()
+        media_path = str(msg_dict.get("media_path", "")).strip()
+        media_id = str(msg_dict.get("media_id", "")).strip()
+        extracted_text = ""
+        if "image" in msg_type_raw:
+            path_to_process = media_path if (media_path and 'media' in media_path) else image_lookup.get(media_id, "")
+            extracted_text = media_proc.process_image(path_to_process or "")
+        elif "voice" in msg_type_raw or "audio" in msg_type_raw:
+            path_to_process = media_path if (media_path and 'media' in media_path) else voice_lookup.get(media_id, "")
+            extracted_text = media_proc.process_voice_note(path_to_process or "")
+
+        evidence_ids, ctx = context_eng.retrieve_evidence_and_context(msg_dict)
+        feats = extractor.extract(msg_dict, extracted_text, ctx)
 
         for f_key, f_val in feats.items():
-            if isinstance(f_val, bool) and f_val:
+            if (isinstance(f_val, bool) and f_val) or (isinstance(f_val, (int, float)) and f_val == 1.0):
                 feature_activation_counts[f_key] = feature_activation_counts.get(f_key, 0) + 1
 
         pred_action, pred_type, conf = rule_classifier.classify(feats)
@@ -54,7 +86,7 @@ def run_diagnostics(dataset_filename: str = "sample_messages.csv"):
         
         extracted_records.append({
             "message_id": str(row["message_id"]),
-            "message_text": raw_text,
+            "message_text": str(row.get("message_text", "")),
             "action_gt": str(row["action"]),
             "action_pred": pred_action,
             "message_type_gt": str(row["message_type"]),
@@ -77,19 +109,38 @@ def run_diagnostics(dataset_filename: str = "sample_messages.csv"):
         "has_school", "has_delivery", "has_meeting", "has_event",
         "has_bank", "has_question", "has_link", "has_volunteer",
         "is_casual_non_urgent", "is_order_delivery_today", 
-        "is_transport_urgent", "is_phishing_link_scam"
+        "is_transport_urgent", "is_phishing_link_scam",
+        "is_verified_business", "sender_trusted", "group_is_muted_feat",
+        "sender_is_group_admin", "during_quiet_hours"
     ]
 
     for feat in important_features:
         count = feature_activation_counts.get(feat, 0)
         print(f"{feat:<28} {count:<15}")
 
-    # 2. CONFUSION MATRIX (Rule Router)
-    print("\n2. CONFUSION MATRIX (Pure Rule Accumulator Router):")
+    # 2. CONFUSION MATRIX (Rule Router Actions)
+    print("\n2. CONFUSION MATRIX (Pure Rule Accumulator Actions):")
     print("-" * 55)
     cm = confusion_matrix(eval_df["action_gt"], eval_df["action_pred"], labels=labels)
     cm_df = pd.DataFrame(cm, index=[f"Actual {l}" for l in labels], columns=[f"Pred {l}" for l in labels])
     print(cm_df.to_string())
+
+    # 2.2 CONFUSION MATRIX (Message Types)
+    print("\n2.2 CONFUSION MATRIX (Message Types):")
+    print("-" * 55)
+    unique_types = sorted(list(set(eval_df["message_type_gt"].unique()) | set(eval_df["message_type_pred"].unique())))
+    cm_types = confusion_matrix(eval_df["message_type_gt"], eval_df["message_type_pred"], labels=unique_types)
+    cm_types_df = pd.DataFrame(cm_types, index=[f"Actual {t}" for t in unique_types], columns=[f"Pred {t}" for t in unique_types])
+    print(cm_types_df.to_string())
+
+    # 2.3 MESSAGE TYPE ACCURACY BREAKDOWN
+    print("\n2.3 MESSAGE TYPE ACCURACY BREAKDOWN:")
+    print("-" * 55)
+    for mt in unique_types:
+        total_gt = (eval_df["message_type_gt"] == mt).sum()
+        correct = ((eval_df["message_type_gt"] == mt) & (eval_df["message_type_pred"] == mt)).sum()
+        pct = (correct / total_gt * 100.0) if total_gt > 0 else 0.0
+        print(f"Type: {mt:<18} | Correct: {correct:>2} / {total_gt:<2} | Accuracy: {pct:.2f}%")
 
     # 3. DETAILED MISS ANALYSIS & ERROR PATTERNS
     print("\n3. DETAILED MISS ANALYSIS & ERROR PATTERNS:")
